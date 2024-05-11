@@ -8,14 +8,17 @@ namespace RelaxingKoala
 {
     internal struct MenuItem
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public float Price { get; set; }
-        public MenuItem(string aName, string aDescription, int aPrice)
+        public string fName { get; set; }
+        public string fDescription { get; set; }
+        public float fPrice { get; set; }
+        public string[] fAllergens { get; set; }  
+        
+        public MenuItem(string aName, string aDescription, float aPrice, string[] aAllergens)
         {
-            Name = aName;
-            Description = aDescription;
-            Price = aPrice;
+            fName = aName;
+            fDescription = aDescription;
+            fPrice = aPrice;
+            fAllergens = aAllergens;
         }
     }
 }

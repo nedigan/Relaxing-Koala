@@ -8,21 +8,28 @@ namespace RelaxingKoala
 {
     internal class Table
     {
-        private int _id;
-        private OnlineCustomer? _reserver;
-        public int ID { get { return _id; } }   
-        public bool IsAvailable { get { return _reserver != null; } }
+        private int _fId;
+        private OnlineCustomer? _fReserver;
+        public bool fIsAvailable { get; set; }
+        public int fID { get { return _fId; } }   
 
         public Table(int aId, OnlineCustomer? reserver = null)
         {
-            _id = aId;
-            _reserver = reserver;
+            _fId = aId;
+            _fReserver = reserver;
+            fIsAvailable = true;
         }
 
-        public void reserveTable(OnlineCustomer reserver)
+        public void reserveTable(OnlineCustomer aReserver = null)
         {
-            _reserver = reserver;
-            // Do something else?
+            _fReserver = aReserver;
+            fIsAvailable = false;  
+        }
+
+        public void freeTable() 
+        {
+            _fReserver = null;
+            fIsAvailable = true;
         }
     }
 }
