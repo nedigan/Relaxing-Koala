@@ -25,6 +25,14 @@ namespace RelaxingKoala
             fOrders.Add(aOrder);
         }
 
+        public void removeOrder(Order aOrder)
+        {
+            if (fOrders.Contains(aOrder))
+                fOrders.Remove(aOrder);
+            else
+                Console.WriteLine("Order has not been recieved and cannot be removed");
+        }
+
         public void setOrderStatus(Order aOrder, OrderStatus aStatus)
         {
             if (fOrders.Contains(aOrder))
