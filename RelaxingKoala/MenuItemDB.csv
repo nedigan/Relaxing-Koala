@@ -1,0 +1,11 @@
+﻿mID,name,description,price,availability,allergens
+1,Ham and Cheese Toastie,Delicious wholegrain bread toasted with ham and cheese,$8.00,Yes,Gluten
+2,Croissant,Fresh baked croissant,$4.00,No,
+3,Chicken Burger,"Delicious burger with deepy fried chicken schnitzel, avocado, lettuce, cheese and tomato with Turkish buns",$13.00,Yes,"Gluten, Dairy "
+4,Cheeseburger,"Delicious burger with beef patty, ham, lettuce, cheese, onion relish and BBQ sauce with Turkish buns",$15.00,Yes,"Gluten, Dairy "
+5,Potato Chips,Crispy potato chips with tomato sauce ,$5.00,Yes,
+6,Potato Wedges,Crispy and spiced potato wedges with sweet chilli sauce and sour cream,$7.00,Yes,dairy
+7,Vegetarian wrap,"Soft tortialla wrap with lettuce, avocado, cheese, aoili, tomatoes and onions",$7.00,Yes,"Gluten, Dairy "
+8,Milkshake,Delicious milkshake of your flavour,$6.00,Yes,Dairy
+9,Coffee,Delightful coffee made your style,$4.00,Yes,
+10,Fish and chips,Deep fried Whiting with fresh baked potato chips,$11.00,Yes,"Gluten, Seafood"
