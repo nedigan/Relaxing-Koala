@@ -12,7 +12,7 @@ namespace RelaxingKoala
         public List<Order> fOrders {  get; private set; } = new List<Order>();
         private Kitchen() { }
 
-        // Singleton pattern
+        // singleton pattern
         public static Kitchen getInstance()
         {
             if (_fInstance == null)
