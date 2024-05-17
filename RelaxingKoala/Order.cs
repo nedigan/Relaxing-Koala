@@ -38,10 +38,12 @@ namespace RelaxingKoala
             fReferenceNumber = aReferenceNumber;
         }
 
-        public void addItemToOrder(MenuItem aItem)
+        public void addItemToOrder(MenuItem aItem, int aQuantity)
         {
             _fItemsOrdered.Add(aItem);
-            // Do something else?
+
+            // updating database
+            AddOrderItemToDB(fReferenceNumber, aItem.fID, aQuantity);
         }
 
         public void payOrder(PaymentType aType)
@@ -72,7 +74,47 @@ namespace RelaxingKoala
                 lKitchen.addOrder(this);
 
                 fStatus = OrderStatus.Paid;
+
+                // adding to database once payment is successful
+                AddOrderToDB(lAmount, aType.ToString().ToLower());
             }
         }
+
+        private void AddOrderItemToDB(int aOrderReference, int aMenuItemID, int aQuantity)
+        {
+            string lNewRecord = $"{aOrderReference},{aMenuItemID},{aQuantity}";
+
+            try
+            {
+                using (StreamWriter lSw = new StreamWriter(@"..\..\..\OrderItemDB.csv", true))
+                {
+                    lSw.WriteLine(lNewRecord);
+                }
+                Console.WriteLine("Order item successfully added to the CSV file.");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Failed to add order item to the CSV file. Error: {e.Message}");
+            }
+        }
+
+        private void AddOrderToDB(float aTotal, string aPaymentType)
+        {
+            string newRecord = $"{fReferenceNumber},{aTotal},{fTable?.fID ?? -1},{fOnlineCustomer?.fID ?? -1},{aPaymentType}";
+
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(@"..\..\..\OrderDB.csv", true))
+                {
+                    sw.WriteLine(newRecord);
+                }
+                Console.WriteLine("Order successfully added to the CSV file.");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Failed to add order to the CSV file. Error: {e.Message}");
+            }
+        }
+
     }
 }

@@ -15,14 +15,20 @@
             Menu lMenu = new Menu();
             lMenu.InitialiseMenu(@"..\..\..\MenuItemDB.csv");
 
-            // function 4
+            // initialising tables
             List <Table> lTables = new List<Table>();
-            // create 10 tables
+            // creating 10 tables
             for (int i  = 1; i <= Constants.MAX_TABLES; i++) 
             {
                 Table lTable = new Table(i);
                 lTables.Add(lTable);
             }
+
+
+            // trying out an order
+            Order order1 = new Order(4, lTables[1]);
+            order1.addItemToOrder(lMenu.fMenu[1], 2);
+            order1.payOrder(PaymentType.Card);
 
             // Interface loop
 
