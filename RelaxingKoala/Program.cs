@@ -24,11 +24,28 @@
                 lTables.Add(lTable);
             }
 
+            // maybe have a list of online customers every time the system is running and that deletes/cleans like the menu does every time ***
+            List<OnlineCustomer> lOnlineCustomers = new List<OnlineCustomer>();
 
-            // trying out an order
+            // trying out an order - works
             Order order1 = new Order(4, lTables[1]);
             order1.addItemToOrder(lMenu.fMenu[1], 2);
             order1.payOrder(PaymentType.Card);
+
+            // trying out order with an online customer
+            OnlineCustomer oc1 = new OnlineCustomer(7, "Hanbin", "Kim", "347928", "khanbin@in.com");
+            lOnlineCustomers.Add(oc1);
+            Order order2 = new Order(5, oc1);
+            order2.addItemToOrder(lMenu.fMenu[0], 1);
+            order2.addItemToOrder(lMenu.fMenu[3], 2);
+            order2.payOrder(PaymentType.Cash);
+
+            // trying out reservation with an online customer
+            Table lTableToReserve = lTables[2]; 
+            OnlineCustomer oc2 = new OnlineCustomer(8, "Jack", "Marsh", "342948", "jackm1298@gmail.com", 4, "2024-05-20 12:00:00");
+            lTableToReserve.reserveTable(oc2);
+            lOnlineCustomers.Add(oc2);
+            lTableToReserve.freeTable();
 
             // Interface loop
 

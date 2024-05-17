@@ -104,9 +104,9 @@ namespace RelaxingKoala
 
             try
             {
-                using (StreamWriter sw = new StreamWriter(@"..\..\..\OrderDB.csv", true))
+                using (StreamWriter lSw = new StreamWriter(@"..\..\..\OrderDB.csv", true))
                 {
-                    sw.WriteLine(newRecord);
+                    lSw.WriteLine(newRecord);
                 }
                 Console.WriteLine("Order successfully added to the CSV file.");
             }

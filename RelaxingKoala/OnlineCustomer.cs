@@ -9,28 +9,71 @@ namespace RelaxingKoala
     internal class OnlineCustomer
     {
         public int fID { get; private set; }
-        public string fFullName {  get; private set; }
+        public string fFirstName { get; private set; }
+        public string fLastName { get; private set; }
         public string fPhoneNumber {  get; private set; }
         public string fEmail {  get; private set; }
-        public int fTableReservedID { get; private set; }
-        public int fOrderID { get; private set; }
+        public int fTableReservationID { get; private set; }
+        public string fDateTime { get; private set; }
 
-        public OnlineCustomer(int aId, string aFullName, string aPhoneNumber, string aEmail)
+        public OnlineCustomer(int aID, string aFirstName, string aLastName, string aPhoneNumber, string aEmail, int aTableReservationID, string aDateTime) : this(aID, aFirstName, aLastName, aPhoneNumber, aEmail)
         {
-            fID = aId;
-            fFullName = aFullName;
-            fPhoneNumber = aPhoneNumber;
-            fEmail = aEmail;
+            fTableReservationID = aTableReservationID;
+            fDateTime = aDateTime; // had to add this because the class could not differentiate between int tableID and int orderID for constructors ***
+            
+            // updating the database 
+            AddReservationToDB();
         }
 
-        // another constructor with just the table reserved ID -- if not null maybe -1 
+        public OnlineCustomer(int aId, string aFirstName, string aLastName, string aPhoneNumber, string aEmail)
+        {
+            fID = aId;
+            fFirstName = aFirstName;
+            fLastName = aLastName;
+            fPhoneNumber = aPhoneNumber;
+            fEmail = aEmail;
 
-        // another constructor with just online customer -- if not null maybe -1
+            // updating the database
+            AddCustomerToDB();
+        }
 
-        // function 2 - update database
+        private void AddCustomerToDB()
+        {
+            string newRecord = $"{fID},{fFirstName},{fLastName},{fPhoneNumber},{fEmail}";
 
-        // function 3 - self destruct (can be in main or here, need to check)
+            try
+            {
+                using (StreamWriter lSw = new StreamWriter(@"..\..\..\OnlineCustomerDB.csv", true))
+                {
+                    lSw.WriteLine(newRecord);
+                }
+                Console.WriteLine("Online customer successfully added to the CSV file.");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Failed to add online customer to the CSV file. Error: {e.Message}");
+            }
+        }
 
-        // f
+        // do we need to fetch the same customer or can that be handled by the DB and we just create new entires here? ***
+
+        private void AddReservationToDB()
+        {
+            string newRecord = $"{fTableReservationID},{fID},{fDateTime}";
+
+            try
+            {
+                using (StreamWriter lSw = new StreamWriter(@"..\..\..\ReservationDB.csv", true))
+                {
+                    lSw.WriteLine(newRecord);
+                }
+                Console.WriteLine("Reservation successfully added to the CSV file.");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Failed to add reservation to the CSV file. Error: {e.Message}");
+            }
+        }
+        
     }
 }

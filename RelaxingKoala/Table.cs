@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,13 +24,17 @@ namespace RelaxingKoala
         public void reserveTable(OnlineCustomer aReserver = null)
         {
             _fReserver = aReserver;
-            fIsAvailable = false;  
+            fIsAvailable = false;
+
+            Console.WriteLine("Table " + _fId + " has been reserved successfully.");
         }
 
         public void freeTable() 
         {
             _fReserver = null;
             fIsAvailable = true;
+
+            Console.WriteLine("Table " + _fId + " has been freed successfully.");
         }
     }
 }
