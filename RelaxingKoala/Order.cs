@@ -45,7 +45,7 @@ namespace RelaxingKoala
 
         public void payOrder(PaymentType aType)
         {
-            Payment lPayment = new Payment(0); // create id somehow, currently just setting to 0 --- Maybe store a collection of payments somewhere?
+            Payment lPayment = new Payment();
             float lAmount = 0;
             foreach (MenuItem lItem in _fItemsOrdered)
             {

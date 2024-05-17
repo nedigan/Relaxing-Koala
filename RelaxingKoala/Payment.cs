@@ -14,26 +14,21 @@ namespace RelaxingKoala
     }
     internal class Payment
     {
-        // Fields???
         public int fID { get; private set; }
         public bool fPaymentSuccessful { get; private set; } = false;
 
-        public Payment(int aID)
+        public Payment()
         {
-            fID = aID;
+            fID = _generateRandomID();
         }
-        public float processCashPayment(float aPaymentTotal)
+        public void processCashPayment(float aPaymentTotal)
         {
             // Do something...
             Console.WriteLine("Processing cash payment...");
 
-            float lChange = 0f; // Could get change here if we want???
-
             _generateReceipt();
 
             fPaymentSuccessful = true; // do some checks to see if payment was successful?
-
-            return lChange;
         }
 
         public void processEftposPayment(float aPaymentAmount)
@@ -63,6 +58,12 @@ namespace RelaxingKoala
         private void _generateReceipt()
         {
             Console.WriteLine("Printing receipt...");
+        }
+
+        private int _generateRandomID()
+        {
+            Random generator = new Random();
+            return generator.Next(0, 1000000);
         }
     }
 }
