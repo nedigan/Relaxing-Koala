@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace RelaxingKoala
 {
     enum OrderStatus
-    {
+    {   
+        New,
         Paid,
         InProgress,
         Ready
