@@ -22,7 +22,7 @@
             {
                 Table lTable = new Table(i);
                 lTables.Add(lTable);
-            }
+            }   
 
             // Interface loop
 
@@ -48,8 +48,10 @@
                             OrderTakeawayMeal(lMenu);
                             break;
                         case 2:
+                            ReserveTable(lTables);
                             break;
                         case 3:
+                            ChangeOrderStatus();
                             break;
                         case 4:
                             Console.WriteLine("Goodbye...");
@@ -104,12 +106,28 @@
             Console.WriteLine("Please enter your email:");
             string? email = Console.ReadLine();
 
-            // Create online customer
+            OnlineCustomer customer = new OnlineCustomer(0, name, phoneNumber, email); // idk how we doing ids
+            Order order = new Order(0, customer); // idk how we doing ids
+            order.addItemToOrder(menuItem); // only one menu item for simplicity????
 
             Console.WriteLine("Press enter to confirm you order and pay.");
             Console.ReadLine();
             Console.WriteLine("Thank you...");
 
+            order.payOrder(PaymentType.Online);
+        }
+        static void ReserveTable(List<Table> aTables)
+        {
+
+        }
+        static void ChangeOrderStatus()
+        {
+            Kitchen kitchen = Kitchen.getInstance();
+            
+            foreach(Order order in kitchen.fOrders)
+            {
+                Console.WriteLine(order.fStatus);
+            }
         }
     }
 }

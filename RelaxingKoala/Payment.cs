@@ -45,7 +45,6 @@ namespace RelaxingKoala
             // Do something...
             // Third-party software??
             Console.WriteLine("Processing online payment...");
-            _generateReceipt();
 
             fPaymentSuccessful = true; // do some checks to see if payment was successful?
         }
