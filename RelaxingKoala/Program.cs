@@ -129,9 +129,11 @@
             Console.WriteLine("Please enter your email:");
             string? email = Console.ReadLine();
 
-            OnlineCustomer customer = new OnlineCustomer(0, name, phoneNumber, email); // idk how we doing ids
+            
+
+            OnlineCustomer customer = new OnlineCustomer(0, name, phoneNumber, email, DateTime.Now.ToString()); // idk how we doing ids
             Order order = new Order(0, customer); // idk how we doing ids
-            order.addItemToOrder(menuItem); // only one menu item for simplicity????
+            order.addItemToOrder(menuItem, 1); // only one menu item for simplicity????
 
             Console.WriteLine("Press enter to confirm you order and pay.");
             Console.ReadLine();
