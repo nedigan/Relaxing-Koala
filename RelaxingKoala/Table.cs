@@ -23,10 +23,13 @@ namespace RelaxingKoala
 
         public void reserveTable(OnlineCustomer aReserver = null)
         {
+            // if available, reserve 
             _fReserver = aReserver;
             fIsAvailable = false;
 
             Console.WriteLine("Table " + _fId + " has been reserved successfully.");
+
+            // else message
         }
 
         public void freeTable() 
