@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace RelaxingKoala
 {
@@ -22,13 +23,13 @@ namespace RelaxingKoala
             {
                 using (StreamReader lReader = new StreamReader(aFilePath))
                 {
-                    // skip the header row
+                    // Skip the header row
                     lReader.ReadLine();
 
                     while (!lReader.EndOfStream)
                     {
                         var lLine = lReader.ReadLine();
-                        // properly handle CSV fields enclosed in quotes
+                        // Properly handle CSV fields enclosed in quotes
                         var lValues = ParseCsvLine(lLine);
 
                         if (lValues.Length >= 6)
@@ -36,13 +37,14 @@ namespace RelaxingKoala
                             bool isAvailable = lValues[4].Trim().Equals("Yes", StringComparison.OrdinalIgnoreCase);
                             if (isAvailable)
                             {
-                                string name = lValues[1].Trim();
-                                string description = lValues[2].Trim();
-                                if (float.TryParse(lValues[3].Trim('$', ' '), NumberStyles.Currency, CultureInfo.InvariantCulture, out float price))
+                                if (int.TryParse(lValues[0].Trim(), out int lID) &&
+                                    float.TryParse(lValues[3].Trim('$', ' '), NumberStyles.Currency, CultureInfo.InvariantCulture, out float price))
                                 {
-                                    string[] allergens = string.IsNullOrEmpty(lValues[5]) ? new string[0] : lValues[5].Trim().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                                    MenuItem menuItem = new MenuItem(name, description, price, allergens.Select(a => a.Trim()).ToArray());
-                                    fMenu.Add(menuItem);
+                                    string lName = lValues[1].Trim();
+                                    string lDescription = lValues[2].Trim();
+                                    string[] lAllergens = string.IsNullOrEmpty(lValues[5]) ? new string[0] : lValues[5].Trim().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                                    MenuItem lMenuItem = new MenuItem(lID, lName, lDescription, price, lAllergens.Select(a => a.Trim()).ToArray());
+                                    fMenu.Add(lMenuItem);
                                 }
                             }
                         }
@@ -54,32 +56,33 @@ namespace RelaxingKoala
                 Console.WriteLine("File doesn't exist");
             }
         }
+
         private string[] ParseCsvLine(string line)
         {
-            var tokens = new List<string>();
-            var currentToken = "";
-            bool inQuotes = false;
+            var lTokens = new List<string>();
+            var lCurrentToken = "";
+            bool lInQuotes = false;
 
             foreach (char c in line)
             {
                 if (c == '"')
                 {
-                    inQuotes = !inQuotes;
+                    lInQuotes = !lInQuotes;
                 }
-                else if (c == ',' && !inQuotes)
+                else if (c == ',' && !lInQuotes)
                 {
-                    tokens.Add(currentToken);
-                    currentToken = "";
+                    lTokens.Add(lCurrentToken);
+                    lCurrentToken = "";
                 }
                 else
                 {
-                    currentToken += c;
+                    lCurrentToken += c;
                 }
             }
 
-            tokens.Add(currentToken);  // add the last token
+            lTokens.Add(lCurrentToken);  // Add the last token
 
-            return tokens.ToArray();
+            return lTokens.ToArray();
         }
 
     }
