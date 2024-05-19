@@ -43,7 +43,7 @@ namespace RelaxingKoala
             _fItemsOrdered.Add(aItem);
 
             // updating database
-            AddOrderItemToDB(fReferenceNumber, aItem.fID, aQuantity);
+            _addOrderItemToDB(aItem.fID, aQuantity);
         }
 
         public void payOrder(PaymentType aType)
@@ -76,13 +76,13 @@ namespace RelaxingKoala
                 fStatus = OrderStatus.Paid;
 
                 // adding to database once payment is successful
-                AddOrderToDB(lAmount, aType.ToString().ToLower());
+                _addOrderToDB(lAmount, aType.ToString().ToLower());
             }
         }
 
-        private void AddOrderItemToDB(int aOrderReference, int aMenuItemID, int aQuantity)
+        private void _addOrderItemToDB(int aMenuItemID, int aQuantity)
         {
-            string lNewRecord = $"{aOrderReference},{aMenuItemID},{aQuantity}";
+            string lNewRecord = $"{fReferenceNumber},{aMenuItemID},{aQuantity}";
 
             try
             {
@@ -98,7 +98,7 @@ namespace RelaxingKoala
             }
         }
 
-        private void AddOrderToDB(float aTotal, string aPaymentType)
+        private void _addOrderToDB(float aTotal, string aPaymentType)
         {
             string newRecord = $"{fReferenceNumber},{aTotal},{fTable?.fID ?? -1},{fOnlineCustomer?.fID ?? -1},{aPaymentType}";
 

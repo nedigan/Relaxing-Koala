@@ -14,10 +14,9 @@ namespace RelaxingKoala
         public bool fIsAvailable { get; set; }
         public int fID { get { return _fId; } }   
 
-        public Table(int aId, OnlineCustomer? reserver = null)
+        public Table(int aId)
         {
             _fId = aId;
-            _fReserver = reserver;
             fIsAvailable = true;
         }
 

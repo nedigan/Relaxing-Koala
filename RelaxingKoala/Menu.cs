@@ -17,7 +17,7 @@ namespace RelaxingKoala
             fMenu = new List<MenuItem>();
         }
 
-        public void InitialiseMenu(string aFilePath)
+        public void initialiseMenu(string aFilePath)
         {
             if (File.Exists(aFilePath))
             {
@@ -30,7 +30,7 @@ namespace RelaxingKoala
                     {
                         var lLine = lReader.ReadLine();
                         // Properly handle CSV fields enclosed in quotes
-                        var lValues = ParseCsvLine(lLine);
+                        var lValues = _parseCsvLine(lLine);
 
                         if (lValues.Length >= 6)
                         {
@@ -57,13 +57,13 @@ namespace RelaxingKoala
             }
         }
 
-        private string[] ParseCsvLine(string line)
+        private string[] _parseCsvLine(string aLine)
         {
             var lTokens = new List<string>();
             var lCurrentToken = "";
             bool lInQuotes = false;
 
-            foreach (char c in line)
+            foreach (char c in aLine)
             {
                 if (c == '"')
                 {
