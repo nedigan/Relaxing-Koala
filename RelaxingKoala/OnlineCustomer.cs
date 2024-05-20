@@ -22,7 +22,7 @@ namespace RelaxingKoala
             fDateTime = aDateTime; // had to add this because the class could not differentiate between int tableID and int orderID for constructors ***
             
             // updating the database 
-            AddReservationToDB();
+            _addReservationToDB();
         }
 
         public OnlineCustomer(int aId, string aFirstName, string aLastName, string aPhoneNumber, string aEmail)
@@ -34,10 +34,10 @@ namespace RelaxingKoala
             fEmail = aEmail;
 
             // updating the database
-            AddCustomerToDB();
+            _addCustomerToDB();
         }
 
-        private void AddCustomerToDB()
+        private void _addCustomerToDB()
         {
             string newRecord = $"{fID},{fFirstName},{fLastName},{fPhoneNumber},{fEmail}";
 
@@ -57,7 +57,7 @@ namespace RelaxingKoala
 
         // do we need to fetch the same customer or can that be handled by the DB and we just create new entires here? ***
 
-        private void AddReservationToDB()
+        private void _addReservationToDB()
         {
             string newRecord = $"{fTableReservationID},{fID},{fDateTime}";
 

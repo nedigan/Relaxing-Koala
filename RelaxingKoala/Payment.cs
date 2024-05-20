@@ -21,7 +21,7 @@ namespace RelaxingKoala
         {
             fID = _generateRandomID();
         }
-        public void processCashPayment(float aPaymentTotal)
+        public void processCashPayment(float aPaymentAmount)
         {
             // Do something...
             Console.WriteLine("Processing cash payment...");

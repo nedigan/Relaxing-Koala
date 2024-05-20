@@ -14,19 +14,21 @@ namespace RelaxingKoala
         public bool fIsAvailable { get; set; }
         public int fID { get { return _fId; } }   
 
-        public Table(int aId, OnlineCustomer? reserver = null)
+        public Table(int aId)
         {
             _fId = aId;
-            _fReserver = reserver;
             fIsAvailable = true;
         }
 
         public void reserveTable(OnlineCustomer aReserver = null)
         {
+            // if available, reserve 
             _fReserver = aReserver;
             fIsAvailable = false;
 
             Console.WriteLine("Table " + _fId + " has been reserved successfully.");
+
+            // else message
         }
 
         public void freeTable() 

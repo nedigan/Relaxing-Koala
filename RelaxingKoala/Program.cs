@@ -13,7 +13,7 @@
             
             // initialising menu
             Menu lMenu = new Menu();
-            lMenu.InitialiseMenu(@"..\..\..\MenuItemDB.csv");
+            lMenu.initialiseMenu(@"..\..\..\MenuItemDB.csv");
 
             // initialising tables
             List <Table> lTables = new List<Table>();
