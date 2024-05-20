@@ -1,4 +1,6 @@
-﻿namespace RelaxingKoala
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace RelaxingKoala
 {
     static class Constants
     {
@@ -42,10 +44,10 @@
 
             // trying out reservation with an online customer
             Table lTableToReserve = lTables[2]; 
-            OnlineCustomer oc2 = new OnlineCustomer(8, "Jack", "Marsh", "342948", "jackm1298@gmail.com", 4, "2024-05-20 12:00:00");
-            lTableToReserve.reserveTable(oc2);
+            OnlineCustomer oc2 = new OnlineCustomer(8, "Jack", "Marsh", "342948", "jackm1298@gmail.com");
+            lTableToReserve.reserveTable(DateTime.Now, oc2);
             lOnlineCustomers.Add(oc2);
-            lTableToReserve.freeTable();
+            lTableToReserve.freeTable(DateTime.Now);
 
             // Interface loop
 
@@ -146,7 +148,47 @@
         }
         static void ReserveTable(List<Table> aTables)
         {
+            DateTime lDateTime;
+            bool lValid = false;
+            do
+            {
+                Console.WriteLine("Please enter the date/time for the reservation (yyyy-mm-dd hh:mm:ss)");
+                string? lDateTimeText = Console.ReadLine();
 
+                if (DateTime.TryParse(lDateTimeText, out lDateTime))
+                    lValid = true;
+
+            } while (!lValid);
+
+            Console.WriteLine();
+
+           if (aTables.Count(t => t.IsAvailable(lDateTime)) == 0){
+                Console.WriteLine("Sorry, there are no available tables on this date.");
+                return;
+           }
+
+            Console.WriteLine("Please enter your first name:");
+            string? firstName = Console.ReadLine();
+
+            Console.WriteLine("Please enter you last name:");
+            string? lastName = Console.ReadLine();
+
+            Console.WriteLine("Please enter your mobile number:");
+            string? phoneNumber = Console.ReadLine();
+
+            Console.WriteLine("Please enter your email:");
+            string? email = Console.ReadLine();
+
+            OnlineCustomer customer = new OnlineCustomer(0, firstName, lastName, phoneNumber, email);
+
+            foreach (Table lTable in aTables) // gets first available table
+            {
+                if (lTable.IsAvailable(lDateTime))
+                {
+                    lTable.reserveTable(lDateTime, customer);
+                    break;
+                }
+            }
         }
         static void ChangeOrderStatus()
         {

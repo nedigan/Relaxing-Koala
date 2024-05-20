@@ -13,17 +13,6 @@ namespace RelaxingKoala
         public string fLastName { get; private set; }
         public string fPhoneNumber {  get; private set; }
         public string fEmail {  get; private set; }
-        public int fTableReservationID { get; private set; }
-        public string fDateTime { get; private set; }
-
-        public OnlineCustomer(int aID, string aFirstName, string aLastName, string aPhoneNumber, string aEmail, int aTableReservationID, string aDateTime) : this(aID, aFirstName, aLastName, aPhoneNumber, aEmail)
-        {
-            fTableReservationID = aTableReservationID;
-            fDateTime = aDateTime; // had to add this because the class could not differentiate between int tableID and int orderID for constructors ***
-            
-            // updating the database 
-            _addReservationToDB();
-        }
 
         public OnlineCustomer(int aId, string aFirstName, string aLastName, string aPhoneNumber, string aEmail)
         {
@@ -56,24 +45,5 @@ namespace RelaxingKoala
         }
 
         // do we need to fetch the same customer or can that be handled by the DB and we just create new entires here? ***
-
-        private void _addReservationToDB()
-        {
-            string newRecord = $"{fTableReservationID},{fID},{fDateTime}";
-
-            try
-            {
-                using (StreamWriter lSw = new StreamWriter(@"..\..\..\ReservationDB.csv", true))
-                {
-                    lSw.WriteLine(newRecord);
-                }
-                Console.WriteLine("Reservation successfully added to the CSV file.");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Failed to add reservation to the CSV file. Error: {e.Message}");
-            }
-        }
-        
     }
 }

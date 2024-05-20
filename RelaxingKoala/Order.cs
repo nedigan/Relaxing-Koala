@@ -15,12 +15,11 @@ namespace RelaxingKoala
     }
     internal class Order
     {
-        private List<MenuItem> _fItemsOrdered = new List<MenuItem>();
         public int fReferenceNumber {  get; private set; }
         public OnlineCustomer? fOnlineCustomer { get; private set; }
         public Table? fTable { get; private set; }
         public bool fIsTakeAway { get { return fOnlineCustomer != null; } }
-        public List<MenuItem> fItemsOrdered { get { return _fItemsOrdered; }}
+        public List<MenuItem> fItemsOrdered { get; private set; } = new List<MenuItem>();
         public OrderStatus fStatus { get; set; }
 
         public Order(int aReferenceNumber, OnlineCustomer aOnlineCustomer) : this(aReferenceNumber)
@@ -40,7 +39,7 @@ namespace RelaxingKoala
 
         public void addItemToOrder(MenuItem aItem, int aQuantity)
         {
-            _fItemsOrdered.Add(aItem);
+            fItemsOrdered.Add(aItem);
 
             // updating database
             _addOrderItemToDB(aItem.fID, aQuantity);
@@ -50,7 +49,7 @@ namespace RelaxingKoala
         {
             Payment lPayment = new Payment();
             float lAmount = 0;
-            foreach (MenuItem lItem in _fItemsOrdered)
+            foreach (MenuItem lItem in fItemsOrdered)
             {
                 lAmount += lItem.fPrice;
             }
