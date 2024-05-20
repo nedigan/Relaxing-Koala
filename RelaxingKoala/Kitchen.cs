@@ -38,6 +38,7 @@ namespace RelaxingKoala
             if (fOrders.Contains(aOrder))
             {
                 aOrder.fStatus = aStatus;
+                Console.WriteLine($"The orders status was successfully changed.");
             }
             else
             {

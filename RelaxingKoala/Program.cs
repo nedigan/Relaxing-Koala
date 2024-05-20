@@ -193,11 +193,68 @@ namespace RelaxingKoala
         static void ChangeOrderStatus()
         {
             Kitchen kitchen = Kitchen.getInstance();
-            
-            foreach(Order order in kitchen.fOrders)
+
+            if (kitchen.fOrders.Count == 0)
             {
-                Console.WriteLine(order.fStatus);
+                Console.WriteLine("There are no current orders...");
+                return;
             }
+
+            Console.WriteLine("Current Orders:");
+            for (int i = 0; i < kitchen.fOrders.Count; i++)
+            {
+                Order lOrder = kitchen.fOrders[i];
+                string lName;
+                if (lOrder.fIsTakeAway)
+                    lName = lOrder.fOnlineCustomer.fFirstName + " " + lOrder.fOnlineCustomer.fLastName;
+                else
+                    lName = "Table: " + lOrder.fTable.fID;
+                Console.WriteLine($"{i + 1}. {lName}");
+                foreach (MenuItem lItem in lOrder.fItemsOrdered)
+                {
+                    Console.WriteLine($"    {lItem.fName}");
+                }
+            }
+
+            Console.WriteLine();
+            bool lIsValid = false;
+            Order lSelectedOrder = null;
+            do
+            {
+                Console.WriteLine($"Which order would you like to update? (1 - {kitchen.fOrders.Count})");
+
+                string? input = Console.ReadLine();
+                input = input?.Trim();
+
+                bool isNumber = int.TryParse(input, out int n);
+                lIsValid = isNumber && n > 0 && n < kitchen.fOrders.Count + 1;
+                if (lIsValid)
+                {
+                    lSelectedOrder = kitchen.fOrders[n - 1];
+                }
+            } while (!lIsValid);
+            
+            Console.WriteLine();
+            Console.WriteLine("What status would you like to change this order to?");
+            Console.WriteLine("1. In Progress");
+            Console.WriteLine("2. Ready");
+
+            lIsValid = false;
+            do
+            {
+                string? input = Console.ReadLine();
+                input = input?.Trim();
+
+                bool isNumber = int.TryParse(input, out int n);
+                lIsValid = isNumber && n > 0 && n < 3;
+                if (lIsValid)
+                {
+                    if (n == 1)
+                        kitchen.setOrderStatus(lSelectedOrder, OrderStatus.InProgress);
+                    else if (n == 2)
+                        kitchen.setOrderStatus(lSelectedOrder, OrderStatus.Ready);
+                }
+            } while (!lIsValid);
         }
     }
 }
