@@ -120,8 +120,11 @@
             Console.WriteLine();
             Console.WriteLine($"You have selected {menuItem.fName}!");
 
-            Console.WriteLine("Please enter your full name:");
-            string? name = Console.ReadLine();
+            Console.WriteLine("Please enter your first name:");
+            string? firstName = Console.ReadLine();
+
+            Console.WriteLine("Please enter you last name:");
+            string? lastName = Console.ReadLine();  
 
             Console.WriteLine("Please enter your mobile number:");
             string? phoneNumber = Console.ReadLine();
@@ -131,7 +134,7 @@
 
             
 
-            OnlineCustomer customer = new OnlineCustomer(0, name, phoneNumber, email, DateTime.Now.ToString()); // idk how we doing ids
+            OnlineCustomer customer = new OnlineCustomer(0, firstName, lastName, phoneNumber, email); // idk how we doing ids
             Order order = new Order(0, customer); // idk how we doing ids
             order.addItemToOrder(menuItem, 1); // only one menu item for simplicity????
 
