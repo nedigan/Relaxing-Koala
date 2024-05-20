@@ -39,7 +39,7 @@ namespace RelaxingKoala
         {
             foreach (var key in fReservedDates.Keys)
             {
-                if (key.Date == aDate)
+                if (key.Date == aDate.Date)
                     return false;
             }
             return true;
