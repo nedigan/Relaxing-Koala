@@ -39,6 +39,12 @@ namespace RelaxingKoala
             {
                 aOrder.fStatus = aStatus;
                 Console.WriteLine($"The orders status was successfully changed.");
+
+                if (aStatus == OrderStatus.Ready)
+                {
+                    fOrders.Remove(aOrder);
+                    Console.WriteLine($"The order has been collected.");
+                }
             }
             else
             {
