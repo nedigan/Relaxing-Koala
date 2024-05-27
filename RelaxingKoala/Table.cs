@@ -18,18 +18,12 @@ namespace RelaxingKoala
         public Table(int aId)
         {
             _fId = aId;
-            fIsAvailable = true;
         }
 
-        public void reserveTable(DateTime aDateTime, string aCustomerName)
-        {
-
-        }
         public void reserveTable(DateTime aDateTime, OnlineCustomer aReserver = null)
         {
             // if available, reserve 
             //_fReserver = aReserver;
-            fIsAvailable = false;
 
             fReservedDates[aDateTime] = aReserver;
             _addReservationToDB(aDateTime, aReserver);
@@ -51,7 +45,13 @@ namespace RelaxingKoala
 
         public void freeTable(DateTime aDate) 
         {
-            fIsAvailable = true;
+            foreach (var key in fReservedDates.Keys)
+            {
+                if (key.Date == aDate.Date)
+                    fReservedDates.Remove(key);
+                    
+            }
+
             Console.WriteLine("Table " + _fId + " has been freed successfully.");
         }
 
