@@ -89,18 +89,8 @@ namespace RelaxingKoala
                 }
             }
         }
-
-        static void OrderTakeawayMeal(Menu aMenu)
+        static MenuItem _getMenuItem(Menu aMenu)
         {
-            Console.WriteLine("Menu: \n");
-
-            for (int i = 0; i < aMenu.fMenu.Count; i++)
-            {
-                Console.WriteLine($"{i+1}. {aMenu.fMenu[i].fName}");
-                Console.WriteLine($"    {aMenu.fMenu[i].fDescription}");
-            }
-
-            Console.WriteLine();
             bool valid = false;
             MenuItem menuItem = new MenuItem();
             do
@@ -115,12 +105,33 @@ namespace RelaxingKoala
                 valid = isNumber && n > 0 && n < aMenu.fMenu.Count + 1;
                 if (valid)
                 {
-                    menuItem = aMenu.fMenu[n-1];
+                    menuItem = aMenu.fMenu[n - 1];
                 }
             } while (!valid);
-
             Console.WriteLine();
             Console.WriteLine($"You have selected {menuItem.fName}!");
+            return menuItem;
+        }
+        static void OrderTakeawayMeal(Menu aMenu)
+        {
+            Console.WriteLine("Menu: \n");
+
+            for (int i = 0; i < aMenu.fMenu.Count; i++)
+            {
+                Console.WriteLine($"{i+1}. {aMenu.fMenu[i].fName}");
+                Console.WriteLine($"    {aMenu.fMenu[i].fDescription}");
+            }
+
+            Console.WriteLine();
+            List<MenuItem> lOrderedItems = new List<MenuItem>();
+            while (true)
+            {
+                lOrderedItems.Add(_getMenuItem(aMenu));
+                Console.WriteLine("Would you like to order again? (Y or N)");
+                string? input = Console.ReadLine();
+                if (input.ToUpper() == "N")
+                    break;
+            }
 
             Console.WriteLine("Please enter your first name:");
             string? firstName = Console.ReadLine();
@@ -138,7 +149,10 @@ namespace RelaxingKoala
 
             OnlineCustomer customer = new OnlineCustomer(0, firstName, lastName, phoneNumber, email); // idk how we doing ids
             Order order = new Order(0, customer); // idk how we doing ids
-            order.addItemToOrder(menuItem, 1); // only one menu item for simplicity????
+            foreach (MenuItem item in lOrderedItems)
+            {
+                order.addItemToOrder(item, 1); // only one menu item for simplicity????
+            }
 
             Console.WriteLine("Press enter to confirm you order and pay.");
             Console.ReadLine();
