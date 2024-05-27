@@ -57,15 +57,16 @@ namespace RelaxingKoala
 
                 Console.WriteLine("1. Order a take away meal.");
                 Console.WriteLine("2. Make a reservation.");
-                Console.WriteLine("3. Kitchen change order status.");
-                Console.WriteLine("4. Quit.");
+                Console.WriteLine("3. Staff book table.");
+                Console.WriteLine("4. Kitchen change order status.");
+                Console.WriteLine("5. Quit.");
 
                 string? input = Console.ReadLine();
                 input = input?.Trim();
 
                 bool isNumber = int.TryParse(input, out int n);
                 
-                if (isNumber && n > 0 && n < 5)
+                if (isNumber && n > 0 && n < 6)
                 {
                     switch (n)
                     {
@@ -76,9 +77,12 @@ namespace RelaxingKoala
                             ReserveTable(lTables);
                             break;
                         case 3:
-                            ChangeOrderStatus();
+                            StaffSetTable(lTables);
                             break;
                         case 4:
+                            ChangeOrderStatus();
+                            break;
+                        case 5:
                             Console.WriteLine("Goodbye...");
                             return;
                     }
@@ -89,7 +93,7 @@ namespace RelaxingKoala
                 }
             }
         }
-        static MenuItem _getMenuItem(Menu aMenu)
+        private static MenuItem _getMenuItem(Menu aMenu)
         {
             bool valid = false;
             MenuItem menuItem = new MenuItem();
@@ -286,6 +290,40 @@ namespace RelaxingKoala
                         kitchen.setOrderStatus(lSelectedOrder, OrderStatus.Ready);
                 }
             } while (!lIsValid);
+        }
+
+        static void StaffSetTable(List<Table> aTables)
+        {
+            int index = 1;
+            List<Table> lFreeTables = new List<Table>();
+            foreach (Table table in aTables)
+            {
+                if (table.IsAvailable(DateTime.Now))
+                {
+                    Console.WriteLine($"{index}. Table {table.fID}");
+                    lFreeTables.Add(table);
+                    index++;
+                }
+            }
+            if (index - 1 == 0) // no available tables
+            {
+                Console.WriteLine("Sorry all tables are booked for today...");
+                return;
+            }
+            
+            bool lIsValid = false;
+            int lTableNum = 0;
+            do
+            {
+                Console.WriteLine($"Which table would you like to book? (1 - {index - 1})");
+                string? num = Console.ReadLine();
+
+                lIsValid = int.TryParse(num, out int n) && n > 0 && n < index;
+                if (lIsValid)
+                    lTableNum = n;
+            } while (!lIsValid);
+
+            lFreeTables[lTableNum - 1].reserveTable(DateTime.Now);
         }
     }
 }
