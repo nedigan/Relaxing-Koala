@@ -148,8 +148,19 @@ namespace RelaxingKoala
         }
         static void ReserveTable(List<Table> aTables)
         {
-            DateTime lDateTime;
             bool lValid = false;
+            int amountOfPeople = 0;
+            do
+            {
+                Console.WriteLine("How many people are you booking for?");
+                string? num = Console.ReadLine();
+                lValid = int.TryParse(num, out amountOfPeople) && amountOfPeople > 0;
+                if (!lValid)
+                    Console.WriteLine("Please input a valid number greater than 0");
+
+            } while (!lValid);
+
+            DateTime lDateTime;
             do
             {
                 Console.WriteLine("Please enter the date/time for the reservation (yyyy-mm-dd hh:mm:ss)");
@@ -161,11 +172,11 @@ namespace RelaxingKoala
             } while (!lValid);
 
             Console.WriteLine();
-
-           if (aTables.Count(t => t.IsAvailable(lDateTime)) == 0){
-                Console.WriteLine("Sorry, there are no available tables on this date.");
+            
+            if (aTables.Count(t => t.IsAvailable(lDateTime)) < Math.Ceiling(amountOfPeople / 4d)){
+                Console.WriteLine("Sorry, there are not enough available tables on this date.");
                 return;
-           }
+            }
 
             Console.WriteLine("Please enter your first name:");
             string? firstName = Console.ReadLine();
@@ -181,12 +192,18 @@ namespace RelaxingKoala
 
             OnlineCustomer customer = new OnlineCustomer(0, firstName, lastName, phoneNumber, email);
 
+            int amountOfTablesNeeded = (int)Math.Ceiling(amountOfPeople / 4d);
             foreach (Table lTable in aTables) // gets first available table
             {
                 if (lTable.IsAvailable(lDateTime))
                 {
-                    lTable.reserveTable(lDateTime, customer);
-                    break;
+                    if (amountOfTablesNeeded > 0)
+                    {
+                        lTable.reserveTable(lDateTime, customer);
+                        amountOfTablesNeeded--;
+                    }
+                    else
+                        break;
                 }
             }
         }

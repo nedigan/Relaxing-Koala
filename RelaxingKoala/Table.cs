@@ -21,6 +21,10 @@ namespace RelaxingKoala
             fIsAvailable = true;
         }
 
+        public void reserveTable(DateTime aDateTime, string aCustomerName)
+        {
+
+        }
         public void reserveTable(DateTime aDateTime, OnlineCustomer aReserver = null)
         {
             // if available, reserve 
