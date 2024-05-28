@@ -23,13 +23,13 @@ namespace RelaxingKoala
             {
                 using (StreamReader lReader = new StreamReader(aFilePath))
                 {
-                    // Skip the header row
+                    // skip the header row
                     lReader.ReadLine();
 
                     while (!lReader.EndOfStream)
                     {
                         var lLine = lReader.ReadLine();
-                        // Properly handle CSV fields enclosed in quotes
+                        // properly handle CSV fields enclosed in quotes
                         var lValues = _parseCsvLine(lLine);
 
                         if (lValues.Length >= 6)
@@ -38,12 +38,12 @@ namespace RelaxingKoala
                             if (isAvailable)
                             {
                                 if (int.TryParse(lValues[0].Trim(), out int lID) &&
-                                    float.TryParse(lValues[3].Trim('$', ' '), NumberStyles.Currency, CultureInfo.InvariantCulture, out float price))
+                                    float.TryParse(lValues[3].Trim('$', ' '), NumberStyles.Currency, CultureInfo.InvariantCulture, out float lPrice))
                                 {
                                     string lName = lValues[1].Trim();
                                     string lDescription = lValues[2].Trim();
                                     string[] lAllergens = string.IsNullOrEmpty(lValues[5]) ? new string[0] : lValues[5].Trim().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                                    MenuItem lMenuItem = new MenuItem(lID, lName, lDescription, price, lAllergens.Select(a => a.Trim()).ToArray());
+                                    MenuItem lMenuItem = new MenuItem(lID, lName, lDescription, lPrice, lAllergens.Select(a => a.Trim()).ToArray());
                                     fMenu.Add(lMenuItem);
                                 }
                             }
@@ -80,7 +80,7 @@ namespace RelaxingKoala
                 }
             }
 
-            lTokens.Add(lCurrentToken);  // Add the last token
+            lTokens.Add(lCurrentToken);  // add the last token
 
             return lTokens.ToArray();
         }

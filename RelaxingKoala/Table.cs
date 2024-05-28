@@ -10,7 +10,6 @@ namespace RelaxingKoala
     internal class Table
     {
         private int _fId;
-        //private OnlineCustomer? _fReserver;
         public Dictionary<DateTime, OnlineCustomer> fReservedDates {  get; private set; } = new Dictionary<DateTime, OnlineCustomer>();
         public bool fIsAvailable { get; set; }
         public int fID { get { return _fId; } }   
@@ -20,20 +19,15 @@ namespace RelaxingKoala
             _fId = aId;
         }
 
-        public void reserveTable(DateTime aDateTime, OnlineCustomer aReserver = null)
+        public void reserveTable(DateTime aDate, OnlineCustomer aReserver = null)
         {
-            // if available, reserve 
-            //_fReserver = aReserver;
-
-            fReservedDates[aDateTime] = aReserver;
-            _addReservationToDB(aDateTime, aReserver);
+            fReservedDates[aDate] = aReserver;
+            _addReservationToDB(aDate, aReserver);
 
             Console.WriteLine("Table " + _fId + " has been reserved successfully.");
-
-            // else message
         }
 
-        public bool IsAvailable(DateTime aDate)
+        public bool isAvailable(DateTime aDate)
         {
             foreach (var key in fReservedDates.Keys)
             {

@@ -44,6 +44,5 @@ namespace RelaxingKoala
             }
         }
 
-        // do we need to fetch the same customer or can that be handled by the DB and we just create new entires here? ***
     }
 }

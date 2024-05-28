@@ -27,30 +27,29 @@ namespace RelaxingKoala
                 lTables.Add(lTable);
             }   
 
-            // maybe have a list of online customers every time the system is running and that deletes/cleans like the menu does every time ***
             List<OnlineCustomer> lOnlineCustomers = new List<OnlineCustomer>();
 
-            // trying out an order - works
+            // trial order 1
             Order order1 = new Order(4, lTables[1]);
             order1.addItemToOrder(lMenu.fMenu[1], 2);
-            order1.payOrder(PaymentType.Card);
+            order1.payOrder(PaymentType.Cash);
 
-            // trying out order with an online customer
+            // trial order 2 with online customer
             OnlineCustomer oc1 = new OnlineCustomer(7, "Hanbin", "Kim", "347928", "khanbin@in.com");
             lOnlineCustomers.Add(oc1);
             Order order2 = new Order(5, oc1);
             order2.addItemToOrder(lMenu.fMenu[0], 1);
             order2.addItemToOrder(lMenu.fMenu[3], 2);
-            order2.payOrder(PaymentType.Cash);
+            order2.payOrder(PaymentType.Online);
 
-            // trying out reservation with an online customer
+            // trial reservation with online customer
             Table lTableToReserve = lTables[2]; 
             OnlineCustomer oc2 = new OnlineCustomer(8, "Jack", "Marsh", "342948", "jackm1298@gmail.com");
             lTableToReserve.reserveTable(DateTime.Now, oc2);
             lOnlineCustomers.Add(oc2);
             lTableToReserve.freeTable(DateTime.Now);
 
-            // Interface loop
+            // interface loop
 
             while (true)
             {
@@ -72,16 +71,16 @@ namespace RelaxingKoala
                     switch (n)
                     {
                         case 1:
-                            OrderTakeawayMeal(lMenu);
+                            consoleOrderTakeawayMeal(lMenu);
                             break;
                         case 2:
-                            ReserveTable(lTables);
+                            consoleReserveTable(lTables);
                             break;
                         case 3:
-                            StaffSetTable(lTables);
+                            consoleStaffSetTable(lTables);
                             break;
                         case 4:
-                            ChangeOrderStatus();
+                            consoleChangeOrderStatus();
                             break;
                         case 5:
                             Console.WriteLine("Goodbye...");
@@ -127,7 +126,7 @@ namespace RelaxingKoala
             
             return menuItem;
         }
-        static void OrderTakeawayMeal(Menu aMenu)
+        static void consoleOrderTakeawayMeal(Menu aMenu)
         {
             Console.WriteLine("Menu: \n");
 
@@ -164,11 +163,11 @@ namespace RelaxingKoala
 
             
 
-            OnlineCustomer customer = new OnlineCustomer(0, firstName, lastName, phoneNumber, email); // idk how we doing ids
-            Order order = new Order(0, customer); // idk how we doing ids
+            OnlineCustomer customer = new OnlineCustomer(0, firstName, lastName, phoneNumber, email); // ids not included in scope as no real database
+            Order order = new Order(0, customer); // ids not included in scope as no real database
             foreach (MenuItem item in lOrderedItems)
             {
-                order.addItemToOrder(item, 1); // only one menu item for simplicity????
+                order.addItemToOrder(item, 1); // only one menu item for simplicity, can be changed to include multiple in one go
             }
 
             Console.WriteLine("Press enter to confirm you order and pay.");
@@ -177,7 +176,7 @@ namespace RelaxingKoala
 
             order.payOrder(PaymentType.Online);
         }
-        static void ReserveTable(List<Table> aTables)
+        static void consoleReserveTable(List<Table> aTables)
         {
             bool lValid = false;
             int amountOfPeople = 0;
@@ -209,34 +208,34 @@ namespace RelaxingKoala
 
             Console.WriteLine();
             
-            if (aTables.Count(t => t.IsAvailable(lDateTime)) < Math.Ceiling(amountOfPeople / 4d)){
+            if (aTables.Count(t => t.isAvailable(lDateTime)) < Math.Ceiling(amountOfPeople / 4d)){
                 Console.WriteLine("Sorry, there are not enough available tables on this date.");
                 return;
             }
 
             Console.WriteLine("Please enter your first name:");
-            string? firstName = Console.ReadLine();
+            string? lFirstName = Console.ReadLine();
 
             Console.WriteLine("Please enter you last name:");
-            string? lastName = Console.ReadLine();
+            string? lLastName = Console.ReadLine();
 
             Console.WriteLine("Please enter your mobile number:");
-            string? phoneNumber = Console.ReadLine();
+            string? lPhoneNumber = Console.ReadLine();
 
             Console.WriteLine("Please enter your email:");
-            string? email = Console.ReadLine();
+            string? lEmail = Console.ReadLine();
 
-            OnlineCustomer customer = new OnlineCustomer(0, firstName, lastName, phoneNumber, email);
+            OnlineCustomer lCustomer = new OnlineCustomer(0, lFirstName, lLastName, lPhoneNumber, lEmail);
 
-            int amountOfTablesNeeded = (int)Math.Ceiling(amountOfPeople / 4d);
+            int lAmountOfTablesNeeded = (int)Math.Ceiling(amountOfPeople / 4d);
             foreach (Table lTable in aTables) // gets first available table
             {
-                if (lTable.IsAvailable(lDateTime))
+                if (lTable.isAvailable(lDateTime))
                 {
-                    if (amountOfTablesNeeded > 0)
+                    if (lAmountOfTablesNeeded > 0)
                     {
-                        lTable.reserveTable(lDateTime, customer);
-                        amountOfTablesNeeded--;
+                        lTable.reserveTable(lDateTime, lCustomer);
+                        lAmountOfTablesNeeded--;
                     }
                     else
                         break;
@@ -244,7 +243,7 @@ namespace RelaxingKoala
             }
             Console.WriteLine("Your reservation reference number is: xxx");
         }
-        static void ChangeOrderStatus()
+        static void consoleChangeOrderStatus()
         {
             Kitchen kitchen = Kitchen.getInstance();
 
@@ -313,7 +312,7 @@ namespace RelaxingKoala
             } while (!lIsValid);
         }
 
-        static void StaffSetTable(List<Table> aTables)
+        static void consoleStaffSetTable(List<Table> aTables)
         {
             bool lIsValid = false;
             int lSelection = 0;
@@ -347,7 +346,7 @@ namespace RelaxingKoala
             List<Table> lFreeTables = new List<Table>();
             foreach (Table table in aTables)
             {
-                if (table.IsAvailable(DateTime.Now))
+                if (table.isAvailable(DateTime.Now))
                 {
                     Console.WriteLine($"{index}. Table {table.fID}");
                     lFreeTables.Add(table);
@@ -376,7 +375,7 @@ namespace RelaxingKoala
         }
         private static void _staffFreeTable(List<Table> aTables)
         {
-            if (aTables.Count(t => !t.IsAvailable(DateTime.Now)) == 0)
+            if (aTables.Count(t => !t.isAvailable(DateTime.Now)) == 0)
             {
                 Console.WriteLine("There are no tables booked for today...");
                 return;
@@ -386,7 +385,7 @@ namespace RelaxingKoala
             List<Table> lBookedTables = new List<Table>();
             foreach (Table table in aTables)
             {
-                if (!table.IsAvailable(DateTime.Now))
+                if (!table.isAvailable(DateTime.Now))
                 {
                     Console.WriteLine($"{index}. Table {table.fID}");
                     lBookedTables.Add(table);
@@ -408,7 +407,6 @@ namespace RelaxingKoala
 
             lBookedTables[lTableNum-1].freeTable(DateTime.Now);
         }
-
 
     }
 }

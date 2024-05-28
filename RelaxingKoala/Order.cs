@@ -35,6 +35,7 @@ namespace RelaxingKoala
         private Order(int aReferenceNumber)
         {
             fReferenceNumber = aReferenceNumber;
+            fStatus = OrderStatus.New;
         }
 
         public void addItemToOrder(MenuItem aItem, int aQuantity)
